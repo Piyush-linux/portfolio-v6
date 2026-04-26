@@ -1,0 +1,3222 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Shubham Chavan — Fullstack Developer</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                corePlugins: { preflight: false },
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            inter: ["Inter", "sans-serif"],
+                            syne: ["Syne", "sans-serif"],
+                        },
+                    },
+                },
+            };
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/iconify/2.0.0/iconify.min.js"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+                border-width: 0;
+                border-style: solid;
+            }
+            html {
+                color-scheme: dark;
+                background: #0a0a0a;
+                color: #e5e5e5;
+                -webkit-text-size-adjust: 100%;
+                -webkit-tap-highlight-color: transparent;
+            }
+            body {
+                background: #0a0a0a;
+                color: #e5e5e5;
+                font-family: "Inter", sans-serif;
+                cursor: none;
+                overflow-x: hidden;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                line-height: 1.5;
+            }
+            .font-syne {
+                font-family: "Syne", sans-serif;
+            }
+            .text-subtle {
+                color: #b0b0b0;
+            }
+            .text-heading {
+                color: #ffffff;
+            }
+            input,
+            button,
+            textarea,
+            select {
+                font: inherit;
+            }
+            img {
+                display: block;
+                max-width: 100%;
+            }
+
+            .cursor-dot {
+                width: 6px;
+                height: 6px;
+                background: #fff;
+                border-radius: 50%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+                z-index: 10001;
+                mix-blend-mode: difference;
+            }
+            .cursor-ring {
+                width: 36px;
+                height: 36px;
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                border-radius: 50%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+                z-index: 10000;
+                transition:
+                    width 0.3s,
+                    height 0.3s,
+                    border-color 0.3s;
+            }
+            .cursor-ring.hovering {
+                width: 56px;
+                height: 56px;
+                border-color: rgba(255, 255, 255, 0.45);
+            }
+            .cursor-ring.clicking {
+                width: 28px;
+                height: 28px;
+            }
+            @media (max-width: 768px) {
+                .cursor-dot,
+                .cursor-ring {
+                    display: none;
+                }
+                body {
+                    cursor: auto;
+                }
+            }
+            .scroll-progress {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 2px;
+                background: rgba(255, 255, 255, 0.4);
+                z-index: 10002;
+            }
+
+            @keyframes fadeInUpBlur {
+                0% {
+                    opacity: 0;
+                    transform: translateY(20px);
+                    filter: blur(10px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                    filter: blur(0);
+                }
+            }
+            .animate-entry {
+                animation: fadeInUpBlur 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+            }
+            .delay-1 {
+                animation-delay: 0.1s;
+            }
+            .delay-2 {
+                animation-delay: 0.2s;
+            }
+            .delay-3 {
+                animation-delay: 0.3s;
+            }
+            .delay-4 {
+                animation-delay: 0.4s;
+            }
+            .delay-5 {
+                animation-delay: 0.5s;
+            }
+            .delay-6 {
+                animation-delay: 0.6s;
+            }
+            .delay-7 {
+                animation-delay: 0.7s;
+            }
+            .delay-8 {
+                animation-delay: 0.8s;
+            }
+            .delay-9 {
+                animation-delay: 0.9s;
+            }
+            .delay-10 {
+                animation-delay: 1s;
+            }
+            .reveal {
+                opacity: 0;
+                transform: translateY(30px);
+                filter: blur(8px);
+                transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            }
+            .reveal.visible {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+
+            @keyframes beam-drop {
+                0% {
+                    transform: translateY(-100%);
+                }
+                100% {
+                    transform: translateY(500%);
+                }
+            }
+            .beam {
+                animation: beam-drop 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            }
+            @keyframes marquee {
+                0% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(-50%);
+                }
+            }
+            .marquee-track {
+                animation: marquee 30s linear infinite;
+            }
+            .marquee-track:hover {
+                animation-play-state: paused;
+            }
+            @keyframes border-spin {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+            @keyframes float {
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-6px);
+                }
+            }
+            .float-anim {
+                animation: float 6s ease-in-out infinite;
+            }
+            @keyframes typing-cursor {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0;
+                }
+            }
+            .typing-cursor {
+                animation: typing-cursor 0.8s step-end infinite;
+            }
+
+            .skill-bar-fill {
+                transition: width 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+                width: 0%;
+            }
+            .skill-bar-fill.active {
+                width: var(--fill-width);
+            }
+            .timeline-line {
+                background: linear-gradient(
+                    to bottom,
+                    transparent,
+                    rgba(255, 255, 255, 0.12),
+                    transparent
+                );
+            }
+            .photo-frame {
+                position: relative;
+            }
+            .photo-frame::before {
+                content: "";
+                position: absolute;
+                inset: -1px;
+                background: conic-gradient(
+                    from 0deg,
+                    rgba(255, 255, 255, 0.15),
+                    transparent,
+                    rgba(255, 255, 255, 0.08),
+                    transparent,
+                    rgba(255, 255, 255, 0.15)
+                );
+                border-radius: inherit;
+                animation: border-spin 8s linear infinite;
+                z-index: -1;
+            }
+            .tilt-card {
+                transform-style: preserve-3d;
+                transition: transform 0.15s ease-out;
+            }
+            .tilt-card .tilt-inner {
+                transform: translateZ(30px);
+            }
+            .magnetic-btn {
+                transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            }
+            .timeline-details {
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                padding-top: 0;
+                transition:
+                    max-height 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+                    opacity 0.3s,
+                    padding 0.3s;
+            }
+            .timeline-details.expanded {
+                max-height: 600px;
+                opacity: 1;
+                padding-top: 16px;
+            }
+            .expand-icon {
+                transition: transform 0.3s;
+            }
+            .expand-icon.rotated {
+                transform: rotate(180deg);
+            }
+            #particles {
+                position: fixed;
+                inset: 0;
+                z-index: 1;
+                pointer-events: none;
+            }
+            .tab-btn.active {
+                background: rgba(255, 255, 255, 0.06);
+                border-color: rgba(255, 255, 255, 0.15);
+                color: #fff !important;
+            }
+            .tab-content {
+                display: none;
+            }
+            .tab-content.active {
+                display: block;
+                animation: fadeInUpBlur 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+            }
+            .copy-tooltip {
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%) translateY(-4px);
+                background: #1a1a1a;
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                padding: 4px 10px;
+                border-radius: 6px;
+                font-size: 11px;
+                color: #d4d4d4;
+                white-space: nowrap;
+                opacity: 0;
+                pointer-events: none;
+                transition:
+                    opacity 0.2s,
+                    transform 0.2s;
+            }
+            .copy-tooltip.show {
+                opacity: 1;
+                transform: translateX(-50%) translateY(-8px);
+            }
+            .tech-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                border-radius: 8px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: rgba(255, 255, 255, 0.02);
+                font-size: 13px;
+                color: #d4d4d4;
+                transition: all 0.3s;
+            }
+            .tech-badge:hover {
+                border-color: rgba(255, 255, 255, 0.2);
+                color: #fff;
+                background: rgba(255, 255, 255, 0.05);
+                transform: translateY(-2px);
+            }
+            .paper-card {
+                border-left: 1px solid rgba(255, 255, 255, 0.08);
+                transition: border-color 0.4s;
+            }
+            .paper-card:hover {
+                border-left-color: rgba(255, 255, 255, 0.35);
+            }
+            .cert-card {
+                position: relative;
+                overflow: hidden;
+            }
+            .cert-card::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(
+                    135deg,
+                    rgba(255, 255, 255, 0.03),
+                    transparent
+                );
+                opacity: 0;
+                transition: opacity 0.4s;
+            }
+            .cert-card:hover::before {
+                opacity: 1;
+            }
+            ::-webkit-scrollbar {
+                width: 4px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #0a0a0a;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.08);
+                border-radius: 2px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: rgba(255, 255, 255, 0.15);
+            }
+        </style>
+    </head>
+    <body class="font-inter antialiased">
+        <div class="cursor-dot" id="cursorDot"></div>
+        <div class="cursor-ring" id="cursorRing"></div>
+        <div
+            class="scroll-progress"
+            id="scrollProgress"
+            style="width: 0%"
+        ></div>
+        <canvas id="particles"></canvas>
+
+        <div class="fixed inset-0 z-0 pointer-events-none">
+            <div
+                class="absolute top-0 left-1/3 w-px h-full overflow-hidden opacity-10"
+            >
+                <div
+                    class="beam w-full h-20 bg-gradient-to-b from-transparent via-white/30 to-transparent"
+                ></div>
+            </div>
+        </div>
+
+        <div class="relative z-[2]">
+            <!-- Nav -->
+            <nav
+                class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#0a0a0a]/70 border-b border-white/[0.06]"
+            >
+                <div
+                    class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"
+                >
+                    <a
+                        href="#"
+                        class="font-syne font-semibold text-base tracking-tight magnetic-link text-heading"
+                        >SC<span class="text-subtle">.</span></a
+                    >
+                    <div class="hidden md:flex items-center gap-8">
+                        <a
+                            href="#about"
+                            class="text-[11px] uppercase tracking-[0.15em] text-subtle hover:text-white transition-colors nav-scramble magnetic-link"
+                            >About</a
+                        >
+                        <a
+                            href="#experience"
+                            class="text-[11px] uppercase tracking-[0.15em] text-subtle hover:text-white transition-colors nav-scramble magnetic-link"
+                            >Experience</a
+                        >
+                        <a
+                            href="#projects"
+                            class="text-[11px] uppercase tracking-[0.15em] text-subtle hover:text-white transition-colors nav-scramble magnetic-link"
+                            >Projects</a
+                        >
+                        <a
+                            href="#research"
+                            class="text-[11px] uppercase tracking-[0.15em] text-subtle hover:text-white transition-colors nav-scramble magnetic-link"
+                            >Research</a
+                        >
+                        <a
+                            href="#skills"
+                            class="text-[11px] uppercase tracking-[0.15em] text-subtle hover:text-white transition-colors nav-scramble magnetic-link"
+                            >Skills</a
+                        >
+                        <a
+                            href="#contact"
+                            class="text-[11px] uppercase tracking-[0.15em] text-subtle hover:text-white transition-colors nav-scramble magnetic-link"
+                            >Contact</a
+                        >
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a
+                            href="https://github.com/Piyush-linux"
+                            target="_blank"
+                            rel="noopener"
+                            class="w-8 h-8 rounded-full border border-white/[0.08] flex items-center justify-center hover:border-white/25 transition-all magnetic-link"
+                            ><span
+                                class="iconify text-subtle"
+                                data-icon="lucide:github"
+                                data-width="13"
+                            ></span
+                        ></a>
+                        <a
+                            href="https://in/shubham-dev404"
+                            target="_blank"
+                            rel="noopener"
+                            class="w-8 h-8 rounded-full border border-white/[0.08] flex items-center justify-center hover:border-white/25 transition-all magnetic-link"
+                            ><span
+                                class="iconify text-subtle"
+                                data-icon="lucide:linkedin"
+                                data-width="13"
+                            ></span
+                        ></a>
+                        <button
+                            id="mobileMenuBtn"
+                            class="md:hidden text-white w-8 h-8 rounded-full border border-white/[0.08] flex items-center justify-center"
+                        >
+                            <span
+                                class="iconify"
+                                data-icon="lucide:menu"
+                                data-width="14"
+                                id="menuIcon"
+                            ></span>
+                        </button>
+                    </div>
+                </div>
+                <div
+                    id="mobileMenu"
+                    class="hidden md:hidden border-t border-white/[0.06] bg-[#0a0a0a]/95 backdrop-blur-md"
+                >
+                    <div class="px-6 py-4 flex flex-col gap-4">
+                        <a
+                            href="#about"
+                            class="text-[11px] uppercase tracking-[0.15em] text-subtle hover:text-white transition-colors mobile-nav"
+                            >About</a
+                        >
+                        <a
+                            href="#experience"
+                            class="text-[11px] uppercase tracking-[0.15em] text-subtle hover:text-white transition-colors mobile-nav"
+                            >Experience</a
+                        >
+                        <a
+                            href="#projects"
+                            class="text-[11px] uppercase tracking-[0.15em] text-subtle hover:text-white transition-colors mobile-nav"
+                            >Projects</a
+                        >
+                        <a
+                            href="#research"
+                            class="text-[11px] uppercase tracking-[0.15em] text-subtle hover:text-white transition-colors mobile-nav"
+                            >Research</a
+                        >
+                        <a
+                            href="#skills"
+                            class="text-[11px] uppercase tracking-[0.15em] text-subtle hover:text-white transition-colors mobile-nav"
+                            >Skills</a
+                        >
+                        <a
+                            href="#contact"
+                            class="text-[11px] uppercase tracking-[0.15em] text-subtle hover:text-white transition-colors mobile-nav"
+                            >Contact</a
+                        >
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Hero -->
+            <section
+                class="min-h-screen relative flex items-center overflow-hidden"
+                id="heroSection"
+            >
+                <div
+                    class="absolute top-1/3 right-0 w-80 h-80 bg-white/[0.015] rounded-full blur-[100px] pointer-events-none"
+                    id="heroGlow1"
+                ></div>
+                <div
+                    class="max-w-6xl mx-auto px-6 md:px-12 w-full pt-24 pb-12 relative z-10"
+                >
+                    <div
+                        class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center"
+                    >
+                        <div
+                            class="lg:col-span-4 flex flex-col items-center lg:items-start animate-entry delay-1"
+                            id="heroLeft"
+                        >
+                            <div
+                                class="photo-frame rounded-2xl mb-8 relative z-10 float-anim tilt-card"
+                                data-tilt
+                            >
+                                <div
+                                    class="w-52 h-64 md:w-60 md:h-72 rounded-2xl overflow-hidden bg-neutral-900 tilt-inner"
+                                >
+                                    <img
+                                        src="https://picsum.photos/seed/shubham-minimal-dev/480/580.jpg"
+                                        alt="Shubham Chavan"
+                                        class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                                        onerror="
+                                            this.style.display = 'none';
+                                            this.parentElement.innerHTML =
+                                                '<div class=\'w-full h-full flex items-center justify-center text-neutral-600\'><span class=\'iconify\' data-icon=\'lucide:code-2\' data-width=\'56\'></span></div>';
+                                        "
+                                    />
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2.5 w-full">
+                                <a
+                                    href="mailto:shubham.dev.404@gmail.com"
+                                    class="copy-trigger relative flex items-center gap-3 text-[13px] text-subtle hover:text-white transition-colors group magnetic-link"
+                                    data-copy="shubham.dev.404@gmail.com"
+                                >
+                                    <span
+                                        class="w-7 h-7 rounded-full border border-white/[0.08] flex items-center justify-center group-hover:border-white/20 transition-all"
+                                        ><span
+                                            class="iconify"
+                                            data-icon="lucide:mail"
+                                            data-width="12"
+                                        ></span
+                                    ></span>
+                                    shubham.dev.404@gmail.com
+                                    <span class="copy-tooltip"
+                                        >Click to copy</span
+                                    >
+                                </a>
+                                <a
+                                    href="tel:+919326092230"
+                                    class="copy-trigger relative flex items-center gap-3 text-[13px] text-subtle hover:text-white transition-colors group magnetic-link"
+                                    data-copy="+91-9326092230"
+                                >
+                                    <span
+                                        class="w-7 h-7 rounded-full border border-white/[0.08] flex items-center justify-center group-hover:border-white/20 transition-all"
+                                        ><span
+                                            class="iconify"
+                                            data-icon="lucide:phone"
+                                            data-width="12"
+                                        ></span
+                                    ></span>
+                                    +91-9326092230
+                                    <span class="copy-tooltip"
+                                        >Click to copy</span
+                                    >
+                                </a>
+                                <div
+                                    class="copy-trigger relative flex items-center gap-3 text-[13px] text-subtle cursor-default"
+                                    data-copy="Mumbai, India"
+                                >
+                                    <span
+                                        class="w-7 h-7 rounded-full border border-white/[0.08] flex items-center justify-center"
+                                        ><span
+                                            class="iconify"
+                                            data-icon="lucide:map-pin"
+                                            data-width="12"
+                                        ></span
+                                    ></span>
+                                    Mumbai, India
+                                    <span class="copy-tooltip"
+                                        >Click to copy</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-8" id="heroRight">
+                            <div class="animate-entry delay-2">
+                                <div
+                                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/[0.08] bg-white/[0.02] mb-8"
+                                >
+                                    <span
+                                        class="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse"
+                                    ></span>
+                                    <span
+                                        class="text-[10px] uppercase tracking-[0.2em] text-subtle"
+                                        >Open to opportunities</span
+                                    >
+                                </div>
+                            </div>
+                            <h1
+                                class="font-syne font-medium tracking-tighter leading-[0.9] mb-8 animate-entry delay-3"
+                            >
+                                <span
+                                    class="block text-5xl md:text-7xl lg:text-[5.5rem] text-heading"
+                                    >Shubham</span
+                                >
+                                <span
+                                    class="block text-5xl md:text-7xl lg:text-[5.5rem] text-subtle"
+                                    >Chavan</span
+                                >
+                            </h1>
+                            <div class="animate-entry delay-4">
+                                <p
+                                    class="text-lg md:text-xl font-light text-subtle font-syne tracking-tight mb-8 h-7"
+                                >
+                                    <span id="typingText"></span
+                                    ><span class="typing-cursor text-subtle"
+                                        >|</span
+                                    >
+                                </p>
+                            </div>
+                            <div class="animate-entry delay-5">
+                                <p
+                                    class="text-base leading-relaxed max-w-xl mb-10"
+                                >
+                                    3+ years delivering production-grade web
+                                    applications on MERN/MEVN stack. From
+                                    wireframe to deployment — managing servers,
+                                    building APIs, and supporting end users in
+                                    live environments.
+                                </p>
+                            </div>
+                            <div
+                                class="flex flex-wrap gap-3 animate-entry delay-6"
+                            >
+                                <a
+                                    href="#contact"
+                                    class="magnetic-btn group inline-flex items-center gap-2 px-7 py-3.5 bg-white text-black text-[11px] uppercase tracking-[0.15em] font-medium hover:bg-neutral-200 transition-colors rounded-lg magnetic-link"
+                                    ><span>Get in Touch</span
+                                    ><span
+                                        class="iconify group-hover:translate-x-0.5 transition-transform"
+                                        data-icon="lucide:arrow-right"
+                                        data-width="13"
+                                    ></span
+                                ></a>
+                                <a
+                                    href="#projects"
+                                    class="magnetic-btn inline-flex items-center gap-2 px-7 py-3.5 border border-white/[0.1] text-[11px] uppercase tracking-[0.15em] font-medium hover:bg-white/[0.04] hover:border-white/20 transition-all rounded-lg magnetic-link"
+                                    >View Projects</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-entry delay-10"
+                >
+                    <span
+                        class="text-[10px] uppercase tracking-[0.2em] text-subtle"
+                        >Scroll</span
+                    >
+                    <div
+                        class="w-px h-6 bg-gradient-to-b from-white/15 to-transparent animate-pulse"
+                    ></div>
+                </div>
+            </section>
+
+            <!-- Marquee -->
+            <div class="border-y border-white/[0.04] py-3 overflow-hidden">
+                <div
+                    class="marquee-track flex whitespace-nowrap"
+                    style="width: max-content"
+                >
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >React.js</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >Vue.js</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >Node.js</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >TypeScript</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >PostgreSQL</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >MongoDB</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >Docker</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >AWS</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >React.js</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >Vue.js</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >Node.js</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >TypeScript</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >PostgreSQL</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >MongoDB</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >Docker</span
+                    ><span class="mx-3 text-subtle">·</span>
+                    <span
+                        class="mx-8 text-[12px] uppercase tracking-[0.15em] text-subtle"
+                        >AWS</span
+                    ><span class="mx-3 text-subtle">·</span>
+                </div>
+            </div>
+
+            <!-- About -->
+            <section id="about" class="py-24 md:py-32 relative">
+                <div class="max-w-6xl mx-auto px-6 md:px-12">
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12"
+                    >
+                        <div class="md:col-span-4">
+                            <div class="sticky top-32 reveal">
+                                <span
+                                    class="text-[10px] uppercase tracking-[0.2em] text-subtle font-medium"
+                                    >01</span
+                                >
+                                <h2
+                                    class="font-syne font-medium text-2xl md:text-3xl tracking-tight mt-3 mb-4 text-heading"
+                                >
+                                    About
+                                </h2>
+                                <div class="w-8 h-px bg-white/15"></div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-8">
+                            <div
+                                class="space-y-5 reveal"
+                                style="transition-delay: 0.1s"
+                            >
+                                <p class="text-base leading-[1.8]">
+                                    I'm a Fullstack Developer with 3+ years of
+                                    hands-on experience building and shipping
+                                    production-grade web applications using the
+                                    MERN and MEVN stacks. I've taken projects
+                                    from wireframe to deployment, managed
+                                    production servers, and supported end users
+                                    in live environments.
+                                </p>
+                                <p class="text-base leading-[1.8]">
+                                    My work spans university-level CMS platforms
+                                    handling thousands of registrations, RESTful
+                                    APIs with robust auth layers, and
+                                    interactive front-end applications. I thrive
+                                    at the intersection of clean code, scalable
+                                    architecture, and user-centric design.
+                                </p>
+                                <p class="text-base leading-[1.8]">
+                                    I've also published 2 research papers at
+                                    international and national conferences,
+                                    reflecting my commitment to continuous
+                                    learning and contributing to the broader
+                                    tech community.
+                                </p>
+                            </div>
+                            <div
+                                class="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/[0.04] mt-14 rounded-xl overflow-hidden reveal"
+                                style="transition-delay: 0.2s"
+                                id="statsGrid"
+                            >
+                                <div
+                                    class="bg-[#0a0a0a] p-6 text-center hover:bg-white/[0.01] transition-colors cursor-default"
+                                >
+                                    <span
+                                        class="block font-syne text-3xl font-medium text-heading counter"
+                                        data-target="3"
+                                        >0</span
+                                    ><span
+                                        class="text-[10px] uppercase tracking-[0.15em] text-subtle mt-2 block"
+                                        >Years</span
+                                    >
+                                </div>
+                                <div
+                                    class="bg-[#0a0a0a] p-6 text-center hover:bg-white/[0.01] transition-colors cursor-default"
+                                >
+                                    <span
+                                        class="block font-syne text-3xl font-medium text-heading counter"
+                                        data-target="10"
+                                        >0</span
+                                    ><span
+                                        class="text-[10px] uppercase tracking-[0.15em] text-subtle mt-2 block"
+                                        >Projects</span
+                                    >
+                                </div>
+                                <div
+                                    class="bg-[#0a0a0a] p-6 text-center hover:bg-white/[0.01] transition-colors cursor-default"
+                                >
+                                    <span
+                                        class="block font-syne text-3xl font-medium text-heading counter"
+                                        data-target="4"
+                                        >0</span
+                                    ><span
+                                        class="text-[10px] uppercase tracking-[0.15em] text-subtle mt-2 block"
+                                        >Roles</span
+                                    >
+                                </div>
+                                <div
+                                    class="bg-[#0a0a0a] p-6 text-center hover:bg-white/[0.01] transition-colors cursor-default"
+                                >
+                                    <span
+                                        class="block font-syne text-3xl font-medium text-heading counter"
+                                        data-target="2"
+                                        >0</span
+                                    ><span
+                                        class="text-[10px] uppercase tracking-[0.15em] text-subtle mt-2 block"
+                                        >Papers</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience -->
+            <section
+                id="experience"
+                class="py-24 md:py-32 relative border-t border-white/[0.04]"
+            >
+                <div class="max-w-6xl mx-auto px-6 md:px-12">
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12"
+                    >
+                        <div class="md:col-span-4">
+                            <div class="sticky top-32 reveal">
+                                <span
+                                    class="text-[10px] uppercase tracking-[0.2em] text-subtle font-medium"
+                                    >02</span
+                                >
+                                <h2
+                                    class="font-syne font-medium text-2xl md:text-3xl tracking-tight mt-3 mb-4 text-heading"
+                                >
+                                    Experience
+                                </h2>
+                                <div class="w-8 h-px bg-white/15"></div>
+                                <p
+                                    class="text-[11px] mt-4 leading-relaxed text-subtle"
+                                >
+                                    Click any role to expand
+                                </p>
+                            </div>
+                        </div>
+                        <div class="md:col-span-8">
+                            <div class="relative">
+                                <div
+                                    class="absolute left-0 md:left-3 top-0 bottom-0 w-px timeline-line"
+                                ></div>
+                                <div
+                                    class="relative pl-8 md:pl-10 pb-10 reveal"
+                                    style="transition-delay: 0.1s"
+                                >
+                                    <div
+                                        class="absolute left-0 md:left-3 top-2 w-1.5 h-1.5 rounded-full bg-white -translate-x-1/2"
+                                    ></div>
+                                    <div
+                                        class="tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] hover:bg-white/[0.02] hover:border-white/[0.1] transition-all duration-500 overflow-hidden"
+                                        data-tilt
+                                    >
+                                        <button
+                                            class="timeline-toggle w-full text-left p-5 md:p-6 flex items-start justify-between gap-4"
+                                        >
+                                            <div>
+                                                <h3
+                                                    class="font-syne font-medium text-lg md:text-xl tracking-tight text-heading"
+                                                >
+                                                    Fullstack Developer
+                                                </h3>
+                                                <p
+                                                    class="text-[13px] mt-1 text-subtle"
+                                                >
+                                                    Dr. Homi Bhabha State
+                                                    University
+                                                </p>
+                                            </div>
+                                            <div
+                                                class="flex items-center gap-3 flex-shrink-0"
+                                            >
+                                                <span
+                                                    class="text-[10px] uppercase tracking-[0.15em] text-subtle border border-white/[0.08] px-2.5 py-1 rounded-full hidden md:inline-block"
+                                                    >Jan 2025 — Now</span
+                                                ><span
+                                                    class="iconify expand-icon rotated text-subtle"
+                                                    data-icon="lucide:chevron-down"
+                                                    data-width="16"
+                                                ></span>
+                                            </div>
+                                        </button>
+                                        <div class="timeline-details expanded">
+                                            <div
+                                                class="px-5 md:px-6 pb-5 md:pb-6"
+                                            >
+                                                <span
+                                                    class="text-[10px] uppercase tracking-[0.15em] text-subtle border border-white/[0.08] px-2.5 py-1 rounded-full inline-block mb-4 md:hidden"
+                                                    >Jan 2025 — Now</span
+                                                >
+                                                <ul
+                                                    class="space-y-2.5 text-sm leading-relaxed"
+                                                >
+                                                    <li class="flex gap-2.5">
+                                                        <span
+                                                            class="text-subtle mt-0.5 flex-shrink-0"
+                                                            >→</span
+                                                        >Deployed Strapi +
+                                                        NuxtJS CMS across 3
+                                                        colleges (Elphinstone,
+                                                        Institute of Science,
+                                                        Secondary Training)
+                                                    </li>
+                                                    <li class="flex gap-2.5">
+                                                        <span
+                                                            class="text-subtle mt-0.5 flex-shrink-0"
+                                                            >→</span
+                                                        >Pre-admission Portal
+                                                        handling 2,000+ student
+                                                        registrations per cycle,
+                                                        plus Counseling Center
+                                                        portal on MERN
+                                                    </li>
+                                                    <li class="flex gap-2.5">
+                                                        <span
+                                                            class="text-subtle mt-0.5 flex-shrink-0"
+                                                            >→</span
+                                                        >Production server infra
+                                                        with Nginx + PM2 for
+                                                        zero-downtime deploys,
+                                                        supporting 100+ faculty
+                                                        and staff
+                                                    </li>
+                                                </ul>
+                                                <div
+                                                    class="flex flex-wrap gap-1.5 mt-4"
+                                                >
+                                                    <span
+                                                        class="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] text-subtle"
+                                                        >Strapi</span
+                                                    ><span
+                                                        class="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] text-subtle"
+                                                        >NuxtJS</span
+                                                    ><span
+                                                        class="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] text-subtle"
+                                                        >MERN</span
+                                                    ><span
+                                                        class="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] text-subtle"
+                                                        >Nginx</span
+                                                    ><span
+                                                        class="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] text-subtle"
+                                                        >PM2</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="relative pl-8 md:pl-10 pb-10 reveal"
+                                    style="transition-delay: 0.2s"
+                                >
+                                    <div
+                                        class="absolute left-0 md:left-3 top-2 w-1.5 h-1.5 rounded-full bg-subtle -translate-x-1/2 hover:bg-white transition-colors"
+                                    ></div>
+                                    <div
+                                        class="tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] hover:bg-white/[0.02] hover:border-white/[0.1] transition-all duration-500 overflow-hidden"
+                                        data-tilt
+                                    >
+                                        <button
+                                            class="timeline-toggle w-full text-left p-5 md:p-6 flex items-start justify-between gap-4"
+                                        >
+                                            <div>
+                                                <h3
+                                                    class="font-syne font-medium text-lg md:text-xl tracking-tight text-heading"
+                                                >
+                                                    IT Consultant
+                                                </h3>
+                                                <p
+                                                    class="text-[13px] mt-1 text-subtle"
+                                                >
+                                                    RUSA Maharashtra
+                                                </p>
+                                            </div>
+                                            <div
+                                                class="flex items-center gap-3 flex-shrink-0"
+                                            >
+                                                <span
+                                                    class="text-[10px] uppercase tracking-[0.15em] text-subtle border border-white/[0.08] px-2.5 py-1 rounded-full hidden md:inline-block"
+                                                    >Nov 2023 — Oct 2024</span
+                                                ><span
+                                                    class="iconify expand-icon text-subtle"
+                                                    data-icon="lucide:chevron-down"
+                                                    data-width="16"
+                                                ></span>
+                                            </div>
+                                        </button>
+                                        <div class="timeline-details">
+                                            <div
+                                                class="px-5 md:px-6 pb-5 md:pb-6"
+                                            >
+                                                <span
+                                                    class="text-[10px] uppercase tracking-[0.15em] text-subtle border border-white/[0.08] px-2.5 py-1 rounded-full inline-block mb-4 md:hidden"
+                                                    >Nov 2023 — Oct 2024</span
+                                                >
+                                                <ul
+                                                    class="space-y-2.5 text-sm leading-relaxed"
+                                                >
+                                                    <li class="flex gap-2.5">
+                                                        <span
+                                                            class="text-subtle mt-0.5 flex-shrink-0"
+                                                            >→</span
+                                                        >Designed UI/UX
+                                                        wireframes and
+                                                        prototypes for RUSA
+                                                        website using Figma
+                                                    </li>
+                                                    <li class="flex gap-2.5">
+                                                        <span
+                                                            class="text-subtle mt-0.5 flex-shrink-0"
+                                                            >→</span
+                                                        >Created technical
+                                                        documentation for MIS
+                                                        implementation (PMUSHA
+                                                        Scheme) — API specs and
+                                                        workflows
+                                                    </li>
+                                                    <li class="flex gap-2.5">
+                                                        <span
+                                                            class="text-subtle mt-0.5 flex-shrink-0"
+                                                            >→</span
+                                                        >Cross-functional IT
+                                                        support and digital
+                                                        transformation
+                                                        initiatives
+                                                    </li>
+                                                </ul>
+                                                <div
+                                                    class="flex flex-wrap gap-1.5 mt-4"
+                                                >
+                                                    <span
+                                                        class="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] text-subtle"
+                                                        >Figma</span
+                                                    ><span
+                                                        class="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] text-subtle"
+                                                        >UI/UX</span
+                                                    ><span
+                                                        class="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] text-subtle"
+                                                        >Documentation</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="relative pl-8 md:pl-10 pb-10 reveal"
+                                    style="transition-delay: 0.3s"
+                                >
+                                    <div
+                                        class="absolute left-0 md:left-3 top-2 w-1.5 h-1.5 rounded-full bg-subtle -translate-x-1/2 hover:bg-white transition-colors"
+                                    ></div>
+                                    <div
+                                        class="tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] hover:bg-white/[0.02] hover:border-white/[0.1] transition-all duration-500 overflow-hidden"
+                                        data-tilt
+                                    >
+                                        <button
+                                            class="timeline-toggle w-full text-left p-5 md:p-6 flex items-start justify-between gap-4"
+                                        >
+                                            <div>
+                                                <h3
+                                                    class="font-syne font-medium text-lg md:text-xl tracking-tight text-heading"
+                                                >
+                                                    Frontend Developer
+                                                </h3>
+                                                <p
+                                                    class="text-[13px] mt-1 text-subtle"
+                                                >
+                                                    MSFDA, Pune
+                                                </p>
+                                            </div>
+                                            <div
+                                                class="flex items-center gap-3 flex-shrink-0"
+                                            >
+                                                <span
+                                                    class="text-[10px] uppercase tracking-[0.15em] text-subtle border border-white/[0.08] px-2.5 py-1 rounded-full hidden md:inline-block"
+                                                    >Dec 2022 — Oct 2023</span
+                                                ><span
+                                                    class="iconify expand-icon text-subtle"
+                                                    data-icon="lucide:chevron-down"
+                                                    data-width="16"
+                                                ></span>
+                                            </div>
+                                        </button>
+                                        <div class="timeline-details">
+                                            <div
+                                                class="px-5 md:px-6 pb-5 md:pb-6"
+                                            >
+                                                <span
+                                                    class="text-[10px] uppercase tracking-[0.15em] text-subtle border border-white/[0.08] px-2.5 py-1 rounded-full inline-block mb-4 md:hidden"
+                                                    >Dec 2022 — Oct 2023</span
+                                                >
+                                                <ul
+                                                    class="space-y-2.5 text-sm leading-relaxed"
+                                                >
+                                                    <li class="flex gap-2.5">
+                                                        <span
+                                                            class="text-subtle mt-0.5 flex-shrink-0"
+                                                            >→</span
+                                                        >Responsive wireframes
+                                                        and optimized workflows
+                                                        for MSFDA portal with
+                                                        modern UI/UX principles
+                                                    </li>
+                                                    <li class="flex gap-2.5">
+                                                        <span
+                                                            class="text-subtle mt-0.5 flex-shrink-0"
+                                                            >→</span
+                                                        >Enhanced cross-device
+                                                        compatibility across web
+                                                        and mobile platforms
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="relative pl-8 md:pl-10 reveal"
+                                    style="transition-delay: 0.4s"
+                                >
+                                    <div
+                                        class="absolute left-0 md:left-3 top-2 w-1.5 h-1.5 rounded-full bg-subtle -translate-x-1/2 hover:bg-white transition-colors"
+                                    ></div>
+                                    <div
+                                        class="tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] hover:bg-white/[0.02] hover:border-white/[0.1] transition-all duration-500 overflow-hidden"
+                                        data-tilt
+                                    >
+                                        <button
+                                            class="timeline-toggle w-full text-left p-5 md:p-6 flex items-start justify-between gap-4"
+                                        >
+                                            <div>
+                                                <h3
+                                                    class="font-syne font-medium text-lg md:text-xl tracking-tight text-heading"
+                                                >
+                                                    Web Developer Intern
+                                                </h3>
+                                                <p
+                                                    class="text-[13px] mt-1 text-subtle"
+                                                >
+                                                    MSFDA, Mumbai
+                                                </p>
+                                            </div>
+                                            <div
+                                                class="flex items-center gap-3 flex-shrink-0"
+                                            >
+                                                <span
+                                                    class="text-[10px] uppercase tracking-[0.15em] text-subtle border border-white/[0.08] px-2.5 py-1 rounded-full hidden md:inline-block"
+                                                    >Feb — May 2022</span
+                                                ><span
+                                                    class="iconify expand-icon text-subtle"
+                                                    data-icon="lucide:chevron-down"
+                                                    data-width="16"
+                                                ></span>
+                                            </div>
+                                        </button>
+                                        <div class="timeline-details">
+                                            <div
+                                                class="px-5 md:px-6 pb-5 md:pb-6"
+                                            >
+                                                <span
+                                                    class="text-[10px] uppercase tracking-[0.15em] text-subtle border border-white/[0.08] px-2.5 py-1 rounded-full inline-block mb-4 md:hidden"
+                                                    >Feb — May 2022</span
+                                                >
+                                                <ul
+                                                    class="space-y-2.5 text-sm leading-relaxed"
+                                                >
+                                                    <li class="flex gap-2.5">
+                                                        <span
+                                                            class="text-subtle mt-0.5 flex-shrink-0"
+                                                            >→</span
+                                                        >Solely developed
+                                                        MSFDA's official website
+                                                        using Vue.js, Node.js,
+                                                        Express.js and MongoDB
+                                                    </li>
+                                                    <li class="flex gap-2.5">
+                                                        <span
+                                                            class="text-subtle mt-0.5 flex-shrink-0"
+                                                            >→</span
+                                                        >Dynamic routing, event
+                                                        registration, feedback
+                                                        forms and CMS serving
+                                                        50+ faculty users
+                                                    </li>
+                                                </ul>
+                                                <div
+                                                    class="flex flex-wrap gap-1.5 mt-4"
+                                                >
+                                                    <span
+                                                        class="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] text-subtle"
+                                                        >Vue.js</span
+                                                    ><span
+                                                        class="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] text-subtle"
+                                                        >Node.js</span
+                                                    ><span
+                                                        class="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] text-subtle"
+                                                        >MongoDB</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects -->
+            <section
+                id="projects"
+                class="py-24 md:py-32 relative border-t border-white/[0.04]"
+            >
+                <div class="max-w-6xl mx-auto px-6 md:px-12">
+                    <div class="text-center mb-14 reveal">
+                        <span
+                            class="text-[10px] uppercase tracking-[0.2em] text-subtle font-medium"
+                            >03</span
+                        >
+                        <h2
+                            class="font-syne font-medium text-2xl md:text-3xl tracking-tight mt-3 mb-4 text-heading"
+                        >
+                            Projects
+                        </h2>
+                        <div class="w-8 h-px bg-white/15 mx-auto"></div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                        <div class="reveal" style="transition-delay: 0.1s">
+                            <div
+                                class="tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] overflow-hidden hover:border-white/[0.12] transition-all duration-500 group h-full flex flex-col"
+                                data-tilt
+                            >
+                                <div
+                                    class="aspect-[16/10] overflow-hidden bg-neutral-900/50 relative"
+                                >
+                                    <img
+                                        src="https://picsum.photos/seed/reactbook-minimal/600/375.jpg"
+                                        alt="ReactBook"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                                    />
+                                    <div class="absolute top-3 right-3">
+                                        <span
+                                            class="text-[10px] uppercase tracking-[0.15em] px-2.5 py-1 rounded-full bg-white/10 backdrop-blur font-medium text-white/90"
+                                            >2026</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    class="p-5 flex-1 flex flex-col tilt-inner"
+                                >
+                                    <h3
+                                        class="font-syne font-medium text-lg tracking-tight mb-1 text-heading"
+                                    >
+                                        ReactBook
+                                    </h3>
+                                    <p class="text-[11px] mb-3 text-subtle">
+                                        Interactive Workbench
+                                    </p>
+                                    <p
+                                        class="text-[13px] leading-relaxed flex-1"
+                                    >
+                                        Web-Notebook for creating, managing and
+                                        executing code cells with virtualized
+                                        rendering and Zustand state management.
+                                    </p>
+                                    <div class="flex flex-wrap gap-1 mt-4">
+                                        <span
+                                            class="text-[10px] px-2 py-0.5 rounded bg-white/[0.04] text-subtle"
+                                            >React</span
+                                        ><span
+                                            class="text-[10px] px-2 py-0.5 rounded bg-white/[0.04] text-subtle"
+                                            >TypeScript</span
+                                        ><span
+                                            class="text-[10px] px-2 py-0.5 rounded bg-white/[0.04] text-subtle"
+                                            >Zustand</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reveal" style="transition-delay: 0.2s">
+                            <div
+                                class="tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] overflow-hidden hover:border-white/[0.12] transition-all duration-500 group h-full flex flex-col"
+                                data-tilt
+                            >
+                                <div
+                                    class="aspect-[16/10] overflow-hidden bg-neutral-900/50 relative"
+                                >
+                                    <img
+                                        src="https://picsum.photos/seed/eduflow-minimal-lms/600/375.jpg"
+                                        alt="EduFlow"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                                    />
+                                    <div class="absolute top-3 right-3">
+                                        <span
+                                            class="text-[10px] uppercase tracking-[0.15em] px-2.5 py-1 rounded-full bg-white/10 backdrop-blur font-medium text-white/90"
+                                            >2023</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    class="p-5 flex-1 flex flex-col tilt-inner"
+                                >
+                                    <h3
+                                        class="font-syne font-medium text-lg tracking-tight mb-1 text-heading"
+                                    >
+                                        EduFlow
+                                    </h3>
+                                    <p class="text-[11px] mb-3 text-subtle">
+                                        Learning Management System
+                                    </p>
+                                    <p
+                                        class="text-[13px] leading-relaxed flex-1"
+                                    >
+                                        Full-stack LMS with dynamic dashboards,
+                                        RESTful APIs for courses, assignments,
+                                        grading and authentication.
+                                    </p>
+                                    <div class="flex flex-wrap gap-1 mt-4">
+                                        <span
+                                            class="text-[10px] px-2 py-0.5 rounded bg-white/[0.04] text-subtle"
+                                            >Vue.js</span
+                                        ><span
+                                            class="text-[10px] px-2 py-0.5 rounded bg-white/[0.04] text-subtle"
+                                            >Node.js</span
+                                        ><span
+                                            class="text-[10px] px-2 py-0.5 rounded bg-white/[0.04] text-subtle"
+                                            >PostgreSQL</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reveal" style="transition-delay: 0.3s">
+                            <div
+                                class="tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] overflow-hidden hover:border-white/[0.12] transition-all duration-500 group h-full flex flex-col"
+                                data-tilt
+                            >
+                                <div
+                                    class="aspect-[16/10] overflow-hidden bg-neutral-900/50 relative"
+                                >
+                                    <img
+                                        src="https://picsum.photos/seed/task-api-minimal/600/375.jpg"
+                                        alt="Task API"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                                    />
+                                    <div class="absolute top-3 right-3">
+                                        <span
+                                            class="text-[10px] uppercase tracking-[0.15em] px-2.5 py-1 rounded-full bg-white/10 backdrop-blur font-medium text-white/90"
+                                            >2023</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    class="p-5 flex-1 flex flex-col tilt-inner"
+                                >
+                                    <h3
+                                        class="font-syne font-medium text-lg tracking-tight mb-1 text-heading"
+                                    >
+                                        Task Management API
+                                    </h3>
+                                    <p class="text-[11px] mb-3 text-subtle">
+                                        Scalable RESTful API
+                                    </p>
+                                    <p
+                                        class="text-[13px] leading-relaxed flex-1"
+                                    >
+                                        Production API with JWT auth, Zod
+                                        validation, Cluster module, rate
+                                        limiting and Docker containerization.
+                                    </p>
+                                    <div class="flex flex-wrap gap-1 mt-4">
+                                        <span
+                                            class="text-[10px] px-2 py-0.5 rounded bg-white/[0.04] text-subtle"
+                                            >Node.js</span
+                                        ><span
+                                            class="text-[10px] px-2 py-0.5 rounded bg-white/[0.04] text-subtle"
+                                            >PostgreSQL</span
+                                        ><span
+                                            class="text-[10px] px-2 py-0.5 rounded bg-white/[0.04] text-subtle"
+                                            >Docker</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Research -->
+            <section
+                id="research"
+                class="py-24 md:py-32 relative border-t border-white/[0.04]"
+            >
+                <div class="max-w-6xl mx-auto px-6 md:px-12">
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12"
+                    >
+                        <div class="md:col-span-4">
+                            <div class="sticky top-32 reveal">
+                                <span
+                                    class="text-[10px] uppercase tracking-[0.2em] text-subtle font-medium"
+                                    >04</span
+                                >
+                                <h2
+                                    class="font-syne font-medium text-2xl md:text-3xl tracking-tight mt-3 mb-4 text-heading"
+                                >
+                                    Research
+                                </h2>
+                                <div class="w-8 h-px bg-white/15"></div>
+                                <p
+                                    class="text-[12px] mt-4 leading-relaxed text-subtle"
+                                >
+                                    Published at international and national
+                                    conferences (2024–2025)
+                                </p>
+                            </div>
+                        </div>
+                        <div class="md:col-span-8 space-y-5">
+                            <div
+                                class="paper-card pl-6 py-5 reveal"
+                                style="transition-delay: 0.1s"
+                            >
+                                <div class="flex items-start gap-4">
+                                    <div
+                                        class="w-10 h-10 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center flex-shrink-0 mt-0.5"
+                                    >
+                                        <span
+                                            class="iconify"
+                                            data-icon="lucide:file-text"
+                                            data-width="16"
+                                        ></span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div
+                                            class="flex flex-wrap items-start justify-between gap-3 mb-1.5"
+                                        >
+                                            <h3
+                                                class="font-syne font-medium text-base tracking-tight text-heading"
+                                            >
+                                                A Comprehensive Study on
+                                                Learning Management Systems in
+                                                Higher Education
+                                            </h3>
+                                            <span
+                                                class="text-[10px] uppercase tracking-[0.15em] border border-white/[0.08] px-2.5 py-1 rounded-full flex-shrink-0 text-subtle"
+                                                >International</span
+                                            >
+                                        </div>
+                                        <p class="text-[12px] mb-2 text-subtle">
+                                            International Conference on
+                                            Computing & Information Technology,
+                                            2025
+                                        </p>
+                                        <p
+                                            class="text-[13px] leading-relaxed text-subtle"
+                                        >
+                                            Exploring the design, implementation
+                                            and impact of LMS platforms in
+                                            Indian higher education
+                                            institutions, with a focus on user
+                                            adoption patterns and learning
+                                            outcomes.
+                                        </p>
+                                        <div
+                                            class="flex items-center gap-4 mt-3"
+                                        >
+                                            <span
+                                                class="text-[10px] text-subtle flex items-center gap-1"
+                                                ><span
+                                                    class="iconify"
+                                                    data-icon="lucide:calendar"
+                                                    data-width="10"
+                                                ></span
+                                                >2025</span
+                                            ><span
+                                                class="text-[10px] text-subtle flex items-center gap-1"
+                                                ><span
+                                                    class="iconify"
+                                                    data-icon="lucide:user"
+                                                    data-width="10"
+                                                ></span
+                                                >Primary Author</span
+                                            ><span
+                                                class="text-[10px] text-subtle flex items-center gap-1"
+                                                ><span
+                                                    class="iconify"
+                                                    data-icon="lucide:book-open"
+                                                    data-width="10"
+                                                ></span
+                                                >Peer Reviewed</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="paper-card pl-6 py-5 reveal"
+                                style="transition-delay: 0.2s"
+                            >
+                                <div class="flex items-start gap-4">
+                                    <div
+                                        class="w-10 h-10 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center flex-shrink-0 mt-0.5"
+                                    >
+                                        <span
+                                            class="iconify"
+                                            data-icon="lucide:file-text"
+                                            data-width="16"
+                                        ></span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div
+                                            class="flex flex-wrap items-start justify-between gap-3 mb-1.5"
+                                        >
+                                            <h3
+                                                class="font-syne font-medium text-base tracking-tight text-heading"
+                                            >
+                                                Digital Transformation in
+                                                Government Education: A Case
+                                                Study of RUSA
+                                            </h3>
+                                            <span
+                                                class="text-[10px] uppercase tracking-[0.15em] border border-white/[0.08] px-2.5 py-1 rounded-full flex-shrink-0 text-subtle"
+                                                >National</span
+                                            >
+                                        </div>
+                                        <p class="text-[12px] mb-2 text-subtle">
+                                            National Conference on Digital
+                                            Governance & Education, 2024
+                                        </p>
+                                        <p
+                                            class="text-[13px] leading-relaxed text-subtle"
+                                        >
+                                            Analyzing the role of IT
+                                            infrastructure and digital tools in
+                                            implementing government education
+                                            schemes, drawing from field
+                                            experience with RUSA Maharashtra.
+                                        </p>
+                                        <div
+                                            class="flex items-center gap-4 mt-3"
+                                        >
+                                            <span
+                                                class="text-[10px] text-subtle flex items-center gap-1"
+                                                ><span
+                                                    class="iconify"
+                                                    data-icon="lucide:calendar"
+                                                    data-width="10"
+                                                ></span
+                                                >2024</span
+                                            ><span
+                                                class="text-[10px] text-subtle flex items-center gap-1"
+                                                ><span
+                                                    class="iconify"
+                                                    data-icon="lucide:user"
+                                                    data-width="10"
+                                                ></span
+                                                >Co-Author</span
+                                            ><span
+                                                class="text-[10px] text-subtle flex items-center gap-1"
+                                                ><span
+                                                    class="iconify"
+                                                    data-icon="lucide:book-open"
+                                                    data-width="10"
+                                                ></span
+                                                >Peer Reviewed</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="reveal" style="transition-delay: 0.3s">
+                                <div
+                                    class="flex items-center gap-3 px-4 py-3 rounded-lg border border-white/[0.04] bg-white/[0.01]"
+                                >
+                                    <span
+                                        class="iconify text-subtle"
+                                        data-icon="lucide:info"
+                                        data-width="14"
+                                    ></span
+                                    ><span class="text-[12px]"
+                                        >Research conducted during BSc IT at
+                                        Mulund College of Commerce under faculty
+                                        guidance</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Certificates -->
+            <section
+                id="certificates"
+                class="py-24 md:py-32 relative border-t border-white/[0.04]"
+            >
+                <div class="max-w-6xl mx-auto px-6 md:px-12">
+                    <div class="text-center mb-14 reveal">
+                        <span
+                            class="text-[10px] uppercase tracking-[0.2em] text-subtle font-medium"
+                            >05</span
+                        >
+                        <h2
+                            class="font-syne font-medium text-2xl md:text-3xl tracking-tight mt-3 mb-4 text-heading"
+                        >
+                            Certificates
+                        </h2>
+                        <div class="w-8 h-px bg-white/15 mx-auto"></div>
+                    </div>
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                    >
+                        <div
+                            class="cert-card tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] p-5 hover:border-white/[0.12] transition-all duration-500 reveal"
+                            data-tilt
+                            style="transition-delay: 0.05s"
+                        >
+                            <div class="tilt-inner">
+                                <div
+                                    class="flex items-start justify-between mb-4"
+                                >
+                                    <div
+                                        class="w-10 h-10 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center"
+                                    >
+                                        <span
+                                            class="iconify"
+                                            data-icon="lucide:award"
+                                            data-width="16"
+                                        ></span>
+                                    </div>
+                                    <span
+                                        class="text-[10px] uppercase tracking-[0.15em] text-subtle"
+                                        >2024</span
+                                    >
+                                </div>
+                                <h3
+                                    class="font-syne font-medium text-sm tracking-tight text-heading mb-1"
+                                >
+                                    AWS Cloud Practitioner
+                                </h3>
+                                <p class="text-[12px] mb-3 text-subtle">
+                                    Amazon Web Services
+                                </p>
+                                <p
+                                    class="text-[12px] leading-relaxed text-subtle"
+                                >
+                                    Foundational understanding of AWS Cloud
+                                    concepts, services, security, architecture,
+                                    and pricing.
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="cert-card tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] p-5 hover:border-white/[0.12] transition-all duration-500 reveal"
+                            data-tilt
+                            style="transition-delay: 0.1s"
+                        >
+                            <div class="tilt-inner">
+                                <div
+                                    class="flex items-start justify-between mb-4"
+                                >
+                                    <div
+                                        class="w-10 h-10 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center"
+                                    >
+                                        <span
+                                            class="iconify"
+                                            data-icon="lucide:container"
+                                            data-width="16"
+                                        ></span>
+                                    </div>
+                                    <span
+                                        class="text-[10px] uppercase tracking-[0.15em] text-subtle"
+                                        >2023</span
+                                    >
+                                </div>
+                                <h3
+                                    class="font-syne font-medium text-sm tracking-tight text-heading mb-1"
+                                >
+                                    Docker Essentials
+                                </h3>
+                                <p class="text-[12px] mb-3 text-subtle">
+                                    IBM / Cognitive Class
+                                </p>
+                                <p
+                                    class="text-[12px] leading-relaxed text-subtle"
+                                >
+                                    Containerization fundamentals, Docker CLI,
+                                    multi-container applications, and
+                                    orchestration basics.
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="cert-card tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] p-5 hover:border-white/[0.12] transition-all duration-500 reveal"
+                            data-tilt
+                            style="transition-delay: 0.15s"
+                        >
+                            <div class="tilt-inner">
+                                <div
+                                    class="flex items-start justify-between mb-4"
+                                >
+                                    <div
+                                        class="w-10 h-10 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center"
+                                    >
+                                        <span
+                                            class="iconify"
+                                            data-icon="lucide:database"
+                                            data-width="16"
+                                        ></span>
+                                    </div>
+                                    <span
+                                        class="text-[10px] uppercase tracking-[0.15em] text-subtle"
+                                        >2023</span
+                                    >
+                                </div>
+                                <h3
+                                    class="font-syne font-medium text-sm tracking-tight text-heading mb-1"
+                                >
+                                    PostgreSQL Advanced
+                                </h3>
+                                <p class="text-[12px] mb-3 text-subtle">
+                                    NPTEL / IIT
+                                </p>
+                                <p
+                                    class="text-[12px] leading-relaxed text-subtle"
+                                >
+                                    Advanced SQL, indexing strategies, query
+                                    optimization, transactions and database
+                                    administration.
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="cert-card tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] p-5 hover:border-white/[0.12] transition-all duration-500 reveal"
+                            data-tilt
+                            style="transition-delay: 0.2s"
+                        >
+                            <div class="tilt-inner">
+                                <div
+                                    class="flex items-start justify-between mb-4"
+                                >
+                                    <div
+                                        class="w-10 h-10 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center"
+                                    >
+                                        <span
+                                            class="iconify"
+                                            data-icon="lucide:shield-check"
+                                            data-width="16"
+                                        ></span>
+                                    </div>
+                                    <span
+                                        class="text-[10px] uppercase tracking-[0.15em] text-subtle"
+                                        >2023</span
+                                    >
+                                </div>
+                                <h3
+                                    class="font-syne font-medium text-sm tracking-tight text-heading mb-1"
+                                >
+                                    API Security Fundamentals
+                                </h3>
+                                <p class="text-[12px] mb-3 text-subtle">
+                                    OWASP / Postman
+                                </p>
+                                <p
+                                    class="text-[12px] leading-relaxed text-subtle"
+                                >
+                                    JWT authentication, rate limiting, input
+                                    validation, CORS policies and secure API
+                                    design patterns.
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="cert-card tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] p-5 hover:border-white/[0.12] transition-all duration-500 reveal"
+                            data-tilt
+                            style="transition-delay: 0.25s"
+                        >
+                            <div class="tilt-inner">
+                                <div
+                                    class="flex items-start justify-between mb-4"
+                                >
+                                    <div
+                                        class="w-10 h-10 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center"
+                                    >
+                                        <span
+                                            class="iconify"
+                                            data-icon="lucide:figma"
+                                            data-width="16"
+                                        ></span>
+                                    </div>
+                                    <span
+                                        class="text-[10px] uppercase tracking-[0.15em] text-subtle"
+                                        >2023</span
+                                    >
+                                </div>
+                                <h3
+                                    class="font-syne font-medium text-sm tracking-tight text-heading mb-1"
+                                >
+                                    UI/UX Design with Figma
+                                </h3>
+                                <p class="text-[12px] mb-3 text-subtle">
+                                    Coursera / Google
+                                </p>
+                                <p
+                                    class="text-[12px] leading-relaxed text-subtle"
+                                >
+                                    User research, wireframing, prototyping,
+                                    design systems and accessibility principles
+                                    in Figma.
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="cert-card tilt-card rounded-xl border border-white/[0.06] bg-white/[0.01] p-5 hover:border-white/[0.12] transition-all duration-500 reveal"
+                            data-tilt
+                            style="transition-delay: 0.3s"
+                        >
+                            <div class="tilt-inner">
+                                <div
+                                    class="flex items-start justify-between mb-4"
+                                >
+                                    <div
+                                        class="w-10 h-10 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center"
+                                    >
+                                        <span
+                                            class="iconify"
+                                            data-icon="lucide:git-branch"
+                                            data-width="16"
+                                        ></span>
+                                    </div>
+                                    <span
+                                        class="text-[10px] uppercase tracking-[0.15em] text-subtle"
+                                        >2022</span
+                                    >
+                                </div>
+                                <h3
+                                    class="font-syne font-medium text-sm tracking-tight text-heading mb-1"
+                                >
+                                    Git & GitHub Mastery
+                                </h3>
+                                <p class="text-[12px] mb-3 text-subtle">
+                                    Udemy
+                                </p>
+                                <p
+                                    class="text-[12px] leading-relaxed text-subtle"
+                                >
+                                    Version control workflows, branching
+                                    strategies, pull requests, CI/CD integration
+                                    and collaborative development.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills -->
+            <section
+                id="skills"
+                class="py-24 md:py-32 relative border-t border-white/[0.04]"
+            >
+                <div class="max-w-6xl mx-auto px-6 md:px-12">
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12"
+                    >
+                        <div class="md:col-span-4">
+                            <div class="sticky top-32 reveal">
+                                <span
+                                    class="text-[10px] uppercase tracking-[0.2em] text-subtle font-medium"
+                                    >06</span
+                                >
+                                <h2
+                                    class="font-syne font-medium text-2xl md:text-3xl tracking-tight mt-3 mb-4 text-heading"
+                                >
+                                    Tech Stack
+                                </h2>
+                                <div class="w-8 h-px bg-white/15 mb-6"></div>
+                                <div class="flex flex-col gap-2">
+                                    <button
+                                        class="tab-btn active text-left text-[10px] uppercase tracking-[0.15em] px-3.5 py-2 rounded-lg border border-white/[0.06] hover:text-white transition-all text-subtle"
+                                        data-tab="bars"
+                                    >
+                                        Proficiency</button
+                                    ><button
+                                        class="tab-btn text-left text-[10px] uppercase tracking-[0.15em] px-3.5 py-2 rounded-lg border border-white/[0.06] hover:text-white transition-all text-subtle"
+                                        data-tab="radar"
+                                    >
+                                        Radar</button
+                                    ><button
+                                        class="tab-btn text-left text-[10px] uppercase tracking-[0.15em] px-3.5 py-2 rounded-lg border border-white/[0.06] hover:text-white transition-all text-subtle"
+                                        data-tab="grid"
+                                    >
+                                        All Tech
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-8">
+                            <div class="tab-content active" id="tab-bars">
+                                <div
+                                    class="space-y-5 reveal"
+                                    style="transition-delay: 0.1s"
+                                    id="skillBarsContainer"
+                                >
+                                    <div class="skill-item">
+                                        <div
+                                            class="flex justify-between mb-1.5"
+                                        >
+                                            <span class="text-[13px]"
+                                                >React.js / Next.js</span
+                                            ><span
+                                                class="text-[11px] text-subtle font-mono skill-percent"
+                                                >0%</span
+                                            >
+                                        </div>
+                                        <div
+                                            class="h-px bg-white/[0.06] rounded-full overflow-hidden"
+                                        >
+                                            <div
+                                                class="skill-bar-fill h-full bg-white/40 rounded-full"
+                                                style="--fill-width: 93%"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <div
+                                            class="flex justify-between mb-1.5"
+                                        >
+                                            <span class="text-[13px]"
+                                                >Vue.js</span
+                                            ><span
+                                                class="text-[11px] text-subtle font-mono skill-percent"
+                                                >0%</span
+                                            >
+                                        </div>
+                                        <div
+                                            class="h-px bg-white/[0.06] rounded-full overflow-hidden"
+                                        >
+                                            <div
+                                                class="skill-bar-fill h-full bg-white/35 rounded-full"
+                                                style="--fill-width: 88%"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <div
+                                            class="flex justify-between mb-1.5"
+                                        >
+                                            <span class="text-[13px]"
+                                                >Node.js / Express.js</span
+                                            ><span
+                                                class="text-[11px] text-subtle font-mono skill-percent"
+                                                >0%</span
+                                            >
+                                        </div>
+                                        <div
+                                            class="h-px bg-white/[0.06] rounded-full overflow-hidden"
+                                        >
+                                            <div
+                                                class="skill-bar-fill h-full bg-white/38 rounded-full"
+                                                style="--fill-width: 90%"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <div
+                                            class="flex justify-between mb-1.5"
+                                        >
+                                            <span class="text-[13px]"
+                                                >TypeScript</span
+                                            ><span
+                                                class="text-[11px] text-subtle font-mono skill-percent"
+                                                >0%</span
+                                            >
+                                        </div>
+                                        <div
+                                            class="h-px bg-white/[0.06] rounded-full overflow-hidden"
+                                        >
+                                            <div
+                                                class="skill-bar-fill h-full bg-white/30 rounded-full"
+                                                style="--fill-width: 85%"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <div
+                                            class="flex justify-between mb-1.5"
+                                        >
+                                            <span class="text-[13px]"
+                                                >PostgreSQL / MongoDB</span
+                                            ><span
+                                                class="text-[11px] text-subtle font-mono skill-percent"
+                                                >0%</span
+                                            >
+                                        </div>
+                                        <div
+                                            class="h-px bg-white/[0.06] rounded-full overflow-hidden"
+                                        >
+                                            <div
+                                                class="skill-bar-fill h-full bg-white/33 rounded-full"
+                                                style="--fill-width: 87%"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <div
+                                            class="flex justify-between mb-1.5"
+                                        >
+                                            <span class="text-[13px]"
+                                                >Docker / DevOps</span
+                                            ><span
+                                                class="text-[11px] text-subtle font-mono skill-percent"
+                                                >0%</span
+                                            >
+                                        </div>
+                                        <div
+                                            class="h-px bg-white/[0.06] rounded-full overflow-hidden"
+                                        >
+                                            <div
+                                                class="skill-bar-fill h-full bg-white/25 rounded-full"
+                                                style="--fill-width: 80%"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <div
+                                            class="flex justify-between mb-1.5"
+                                        >
+                                            <span class="text-[13px]"
+                                                >TailwindCSS</span
+                                            ><span
+                                                class="text-[11px] text-subtle font-mono skill-percent"
+                                                >0%</span
+                                            >
+                                        </div>
+                                        <div
+                                            class="h-px bg-white/[0.06] rounded-full overflow-hidden"
+                                        >
+                                            <div
+                                                class="skill-bar-fill h-full bg-white/40 rounded-full"
+                                                style="--fill-width: 92%"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-content" id="tab-radar">
+                                <div class="reveal">
+                                    <canvas
+                                        id="radarChart"
+                                        width="500"
+                                        height="500"
+                                        class="mx-auto"
+                                    ></canvas>
+                                    <p
+                                        class="text-center text-[11px] mt-4 text-subtle"
+                                    >
+                                        Hover to see values
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="tab-content" id="tab-grid">
+                                <div class="reveal">
+                                    <div class="mb-7">
+                                        <h4
+                                            class="text-[10px] uppercase tracking-[0.2em] text-subtle mb-3"
+                                        >
+                                            Languages
+                                        </h4>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="tech-badge"
+                                                >JavaScript</span
+                                            ><span class="tech-badge"
+                                                >TypeScript</span
+                                            ><span class="tech-badge"
+                                                >Python</span
+                                            ><span class="tech-badge"
+                                                >Bash</span
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="mb-7">
+                                        <h4
+                                            class="text-[10px] uppercase tracking-[0.2em] text-subtle mb-3"
+                                        >
+                                            Frontend
+                                        </h4>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="tech-badge">React</span
+                                            ><span class="tech-badge"
+                                                >Next.js</span
+                                            ><span class="tech-badge">Vue</span
+                                            ><span class="tech-badge"
+                                                >TailwindCSS</span
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="mb-7">
+                                        <h4
+                                            class="text-[10px] uppercase tracking-[0.2em] text-subtle mb-3"
+                                        >
+                                            Backend
+                                        </h4>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="tech-badge"
+                                                >NodeJS</span
+                                            ><span class="tech-badge"
+                                                >Express</span
+                                            ><span class="tech-badge"
+                                                >StrapiCMS</span
+                                            ><span class="tech-badge"
+                                                >MongoDB</span
+                                            ><span class="tech-badge"
+                                                >PostgreSQL</span
+                                            >
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4
+                                            class="text-[10px] uppercase tracking-[0.2em] text-subtle mb-3"
+                                        >
+                                            DevOps
+                                        </h4>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="tech-badge"
+                                                >Git/GitHub</span
+                                            ><span class="tech-badge"
+                                                >Linux</span
+                                            ><span class="tech-badge"
+                                                >Docker</span
+                                            ><span class="tech-badge"
+                                                >Nginx</span
+                                            ><span class="tech-badge">AWS</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Education -->
+            <section
+                id="education"
+                class="py-24 md:py-32 relative border-t border-white/[0.04]"
+            >
+                <div class="max-w-6xl mx-auto px-6 md:px-12">
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12"
+                    >
+                        <div class="md:col-span-4">
+                            <div class="sticky top-32 reveal">
+                                <span
+                                    class="text-[10px] uppercase tracking-[0.2em] text-subtle font-medium"
+                                    >07</span
+                                >
+                                <h2
+                                    class="font-syne font-medium text-2xl md:text-3xl tracking-tight mt-3 mb-4 text-heading"
+                                >
+                                    Education
+                                </h2>
+                                <div class="w-8 h-px bg-white/15"></div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-8">
+                            <div
+                                class="p-5 md:p-6 rounded-xl border border-white/[0.06] bg-white/[0.01] hover:bg-white/[0.02] hover:border-white/[0.1] transition-all duration-500 group reveal tilt-card"
+                                data-tilt
+                                style="transition-delay: 0.1s"
+                            >
+                                <div class="flex items-start gap-4 tilt-inner">
+                                    <div
+                                        class="w-11 h-11 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center flex-shrink-0"
+                                    >
+                                        <span
+                                            class="iconify"
+                                            data-icon="lucide:graduation-cap"
+                                            data-width="18"
+                                        ></span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div
+                                            class="flex flex-wrap items-start justify-between gap-3 mb-2"
+                                        >
+                                            <h3
+                                                class="font-syne font-medium text-lg tracking-tight text-heading"
+                                            >
+                                                BSc in Information Technology
+                                            </h3>
+                                            <span
+                                                class="text-[10px] uppercase tracking-[0.15em] border border-white/[0.08] px-2.5 py-1 rounded-full flex-shrink-0 text-subtle"
+                                                >2023</span
+                                            >
+                                        </div>
+                                        <p class="text-[13px] mb-3">
+                                            Mulund College of Commerce —
+                                            <span
+                                                class="text-heading font-medium"
+                                                >CGPI: 8.4 / 10.0</span
+                                            >
+                                        </p>
+                                        <p
+                                            class="text-[13px] leading-relaxed text-subtle mb-3"
+                                        >
+                                            Final-Year Project: Learning
+                                            Management System with course
+                                            management, assignments and progress
+                                            tracking.
+                                        </p>
+                                        <div
+                                            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.02] border border-white/[0.06]"
+                                        >
+                                            <span
+                                                class="iconify text-subtle"
+                                                data-icon="lucide:file-text"
+                                                data-width="12"
+                                            ></span
+                                            ><span class="text-[11px]"
+                                                >Published 2 research papers at
+                                                international & national
+                                                conferences (2024–2025)</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact -->
+            <section
+                id="contact"
+                class="py-24 md:py-32 relative border-t border-white/[0.04]"
+            >
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-white/[0.01] to-transparent pointer-events-none"
+                ></div>
+                <div class="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
+                    <div class="text-center mb-14 reveal">
+                        <span
+                            class="text-[10px] uppercase tracking-[0.2em] text-subtle font-medium"
+                            >08</span
+                        >
+                        <h2
+                            class="font-syne font-medium text-3xl md:text-5xl tracking-tighter mt-4 mb-5 text-heading"
+                        >
+                            Let's Build<br /><span class="text-subtle"
+                                >Together</span
+                            >
+                        </h2>
+                        <p class="text-base max-w-md mx-auto">
+                            Have a project or opportunity? I'd love to connect.
+                        </p>
+                    </div>
+                    <div class="max-w-lg mx-auto">
+                        <form
+                            id="contactForm"
+                            class="space-y-5 reveal"
+                            style="transition-delay: 0.1s"
+                        >
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div class="relative">
+                                    <label
+                                        class="block text-[10px] uppercase tracking-[0.15em] mb-2 text-subtle"
+                                        >Name</label
+                                    ><input
+                                        type="text"
+                                        placeholder="Your name"
+                                        required
+                                        class="form-input w-full bg-white/[0.02] border border-white/[0.08] rounded-lg px-4 py-3.5 text-[13px] text-white placeholder:text-neutral-600 focus:outline-none focus:border-white/25 focus:bg-white/[0.03] transition-all"
+                                    /><span
+                                        class="form-check hidden absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full items-center justify-center"
+                                        ><span
+                                            class="iconify text-black"
+                                            data-icon="lucide:check"
+                                            data-width="10"
+                                        ></span
+                                    ></span>
+                                </div>
+                                <div class="relative">
+                                    <label
+                                        class="block text-[10px] uppercase tracking-[0.15em] mb-2 text-subtle"
+                                        >Email</label
+                                    ><input
+                                        type="email"
+                                        placeholder="your@email.com"
+                                        required
+                                        class="form-input w-full bg-white/[0.02] border border-white/[0.08] rounded-lg px-4 py-3.5 text-[13px] text-white placeholder:text-neutral-600 focus:outline-none focus:border-white/25 focus:bg-white/[0.03] transition-all"
+                                    /><span
+                                        class="form-check hidden absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full items-center justify-center"
+                                        ><span
+                                            class="iconify text-black"
+                                            data-icon="lucide:check"
+                                            data-width="10"
+                                        ></span
+                                    ></span>
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] uppercase tracking-[0.15em] mb-2 text-subtle"
+                                    >Message</label
+                                ><textarea
+                                    rows="4"
+                                    placeholder="Tell me about your project..."
+                                    required
+                                    class="form-input w-full bg-white/[0.02] border border-white/[0.08] rounded-lg px-4 py-3.5 text-[13px] text-white placeholder:text-neutral-600 focus:outline-none focus:border-white/25 focus:bg-white/[0.03] transition-all resize-none"
+                                ></textarea>
+                                <div class="flex justify-end mt-1">
+                                    <span
+                                        class="char-count text-[10px] text-subtle"
+                                        >0 / 500</span
+                                    >
+                                </div>
+                            </div>
+                            <button
+                                type="submit"
+                                id="submitBtn"
+                                class="magnetic-btn group w-full flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-black text-[11px] uppercase tracking-[0.15em] font-medium hover:bg-neutral-200 transition-colors rounded-lg magnetic-link"
+                            >
+                                <span id="submitText">Send Message</span
+                                ><span
+                                    class="iconify group-hover:translate-x-0.5 transition-transform"
+                                    data-icon="lucide:arrow-right"
+                                    data-width="13"
+                                    id="submitArrow"
+                                ></span
+                                ><span
+                                    class="iconify hidden animate-spin"
+                                    data-icon="lucide:loader-2"
+                                    data-width="13"
+                                    id="submitLoader"
+                                ></span>
+                            </button>
+                        </form>
+                        <div
+                            id="toast"
+                            class="hidden fixed bottom-8 right-8 z-[100] bg-neutral-900 border border-white/[0.1] rounded-lg px-5 py-3 flex items-center gap-2.5 shadow-2xl"
+                        >
+                            <span
+                                class="iconify text-white"
+                                data-icon="lucide:check"
+                                data-width="14"
+                            ></span
+                            ><span class="text-[13px]">Message sent</span>
+                        </div>
+                        <div
+                            class="flex flex-wrap justify-center gap-6 mt-10 pt-10 border-t border-white/[0.04] reveal"
+                            style="transition-delay: 0.2s"
+                        >
+                            <a
+                                href="mailto:shubham.dev.404@gmail.com"
+                                class="flex items-center gap-2 text-[13px] text-subtle hover:text-white transition-colors magnetic-link"
+                                >shubham.dev.404@gmail.com</a
+                            >
+                            <a
+                                href="https://github.com/Piyush-linux"
+                                target="_blank"
+                                rel="noopener"
+                                class="flex items-center gap-2 text-[13px] text-subtle hover:text-white transition-colors magnetic-link"
+                                >GitHub</a
+                            >
+                            <a
+                                href="https://in/shubham-dev404"
+                                target="_blank"
+                                rel="noopener"
+                                class="flex items-center gap-2 text-[13px] text-subtle hover:text-white transition-colors magnetic-link"
+                                >LinkedIn</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="border-t border-white/[0.04] py-6">
+                <div
+                    class="max-w-6xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-3"
+                >
+                    <span class="text-[10px] text-subtle"
+                        >© 2025 Shubham Chavan</span
+                    >
+                    <button
+                        id="backToTop"
+                        class="text-[10px] text-subtle hover:text-white transition-colors flex items-center gap-1 magnetic-link"
+                    >
+                        <span
+                            class="iconify"
+                            data-icon="lucide:arrow-up"
+                            data-width="10"
+                        ></span
+                        >Back to top
+                    </button>
+                </div>
+            </footer>
+        </div>
+
+        <script>
+            (function () {
+                var dot = document.getElementById("cursorDot");
+                var ring = document.getElementById("cursorRing");
+                var mx = 0,
+                    my = 0,
+                    rx = 0,
+                    ry = 0;
+
+                document.addEventListener("mousemove", function (e) {
+                    mx = e.clientX;
+                    my = e.clientY;
+                    dot.style.transform =
+                        "translate(" + (mx - 3) + "px," + (my - 3) + "px)";
+                });
+
+                (function cursorLoop() {
+                    rx += (mx - rx) * 0.15;
+                    ry += (my - ry) * 0.15;
+                    ring.style.transform =
+                        "translate(" + (rx - 18) + "px," + (ry - 18) + "px)";
+                    requestAnimationFrame(cursorLoop);
+                })();
+
+                document.addEventListener("mousedown", function () {
+                    ring.classList.add("clicking");
+                });
+                document.addEventListener("mouseup", function () {
+                    ring.classList.remove("clicking");
+                });
+
+                document
+                    .querySelectorAll(
+                        "a,button,.tilt-card,.copy-trigger,input,textarea",
+                    )
+                    .forEach(function (el) {
+                        el.addEventListener("mouseenter", function () {
+                            ring.classList.add("hovering");
+                        });
+                        el.addEventListener("mouseleave", function () {
+                            ring.classList.remove("hovering");
+                        });
+                    });
+
+                // Particles
+                var canvas = document.getElementById("particles");
+                var ctx = canvas.getContext("2d");
+                var pts = [];
+                function resizeCanvas() {
+                    canvas.width = innerWidth;
+                    canvas.height = innerHeight;
+                }
+                resizeCanvas();
+                addEventListener("resize", resizeCanvas);
+
+                function createParticle() {
+                    return {
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        s: Math.random() * 1 + 0.3,
+                        vx: (Math.random() - 0.5) * 0.2,
+                        vy: (Math.random() - 0.5) * 0.2,
+                        o: Math.random() * 0.15 + 0.04,
+                    };
+                }
+
+                for (var i = 0; i < 35; i++) pts.push(createParticle());
+
+                function animateParticles() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    for (var i = 0; i < pts.length; i++) {
+                        var p = pts[i];
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        var d = Math.hypot(p.x - mx, p.y - my);
+                        if (d < 100) {
+                            var f = ((100 - d) / 100) * 0.5;
+                            p.x += ((p.x - mx) / d) * f;
+                            p.y += ((p.y - my) / d) * f;
+                        }
+                        if (
+                            p.x < 0 ||
+                            p.x > canvas.width ||
+                            p.y < 0 ||
+                            p.y > canvas.height
+                        ) {
+                            pts[i] = createParticle();
+                            continue;
+                        }
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.s, 0, 6.28);
+                        ctx.fillStyle = "rgba(255,255,255," + p.o + ")";
+                        ctx.fill();
+                    }
+                    for (var i = 0; i < pts.length; i++) {
+                        for (var j = i + 1; j < pts.length; j++) {
+                            var d = Math.hypot(
+                                pts[i].x - pts[j].x,
+                                pts[i].y - pts[j].y,
+                            );
+                            if (d < 80) {
+                                ctx.beginPath();
+                                ctx.moveTo(pts[i].x, pts[i].y);
+                                ctx.lineTo(pts[j].x, pts[j].y);
+                                ctx.strokeStyle =
+                                    "rgba(255,255,255," +
+                                    0.03 * (1 - d / 80) +
+                                    ")";
+                                ctx.lineWidth = 0.5;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    requestAnimationFrame(animateParticles);
+                }
+                animateParticles();
+
+                // Scroll progress
+                var sp = document.getElementById("scrollProgress");
+                addEventListener("scroll", function () {
+                    sp.style.width =
+                        (scrollY /
+                            (document.documentElement.scrollHeight -
+                                innerHeight)) *
+                            100 +
+                        "%";
+                });
+
+                // Typing effect — FIXED: no longer uses broken IIFE reference
+                var te = document.getElementById("typingText");
+                var phrases = [
+                    "Fullstack Developer",
+                    "MERN / MEVN Stack",
+                    "UI/UX Enthusiast",
+                    "DevOps Practitioner",
+                ];
+                var pi = 0,
+                    ci = 0,
+                    deleting = false;
+
+                function typeLoop() {
+                    var current = phrases[pi];
+                    if (deleting) {
+                        ci--;
+                    } else {
+                        ci++;
+                    }
+                    te.textContent = current.substring(0, ci);
+
+                    var delay = deleting ? 35 : 70;
+                    if (!deleting && ci === current.length) {
+                        delay = 2000;
+                        deleting = true;
+                    } else if (deleting && ci === 0) {
+                        deleting = false;
+                        pi = (pi + 1) % phrases.length;
+                        delay = 400;
+                    }
+                    setTimeout(typeLoop, delay);
+                }
+                setTimeout(typeLoop, 800);
+
+                // REVEAL OBSERVER — this is what makes sections visible
+                var revealObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting)
+                                entry.target.classList.add("visible");
+                        });
+                    },
+                    { threshold: 0.12, rootMargin: "0px 0px -30px 0px" },
+                );
+
+                document.querySelectorAll(".reveal").forEach(function (el) {
+                    revealObserver.observe(el);
+                });
+
+                // Counter animation
+                var counted = false;
+                var counterObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting && !counted) {
+                                counted = true;
+                                document
+                                    .querySelectorAll(".counter")
+                                    .forEach(function (c) {
+                                        var target = parseInt(c.dataset.target);
+                                        var start = performance.now();
+                                        function update(now) {
+                                            var progress = Math.min(
+                                                (now - start) / 1500,
+                                                1,
+                                            );
+                                            c.textContent = Math.round(
+                                                target *
+                                                    (1 -
+                                                        Math.pow(
+                                                            1 - progress,
+                                                            3,
+                                                        )),
+                                            );
+                                            if (progress < 1)
+                                                requestAnimationFrame(update);
+                                            else c.textContent = target + "+";
+                                        }
+                                        requestAnimationFrame(update);
+                                    });
+                            }
+                        });
+                    },
+                    { threshold: 0.3 },
+                );
+                var statsGrid = document.getElementById("statsGrid");
+                if (statsGrid) counterObserver.observe(statsGrid);
+
+                // Skill bars
+                var skillAnimated = false;
+                var skillObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting && !skillAnimated) {
+                                skillAnimated = true;
+                                var widths = [93, 88, 90, 85, 87, 80, 92];
+                                var bars =
+                                    document.querySelectorAll(
+                                        ".skill-bar-fill",
+                                    );
+                                var percents =
+                                    document.querySelectorAll(".skill-percent");
+                                bars.forEach(function (bar, i) {
+                                    setTimeout(function () {
+                                        bar.classList.add("active");
+                                        var target = widths[i];
+                                        var start = performance.now();
+                                        function update(now) {
+                                            var progress = Math.min(
+                                                (now - start) / 1200,
+                                                1,
+                                            );
+                                            percents[i].textContent =
+                                                Math.round(
+                                                    target *
+                                                        (1 -
+                                                            Math.pow(
+                                                                1 - progress,
+                                                                2,
+                                                            )),
+                                                ) + "%";
+                                            if (progress < 1)
+                                                requestAnimationFrame(update);
+                                        }
+                                        requestAnimationFrame(update);
+                                    }, i * 80);
+                                });
+                            }
+                        });
+                    },
+                    { threshold: 0.2 },
+                );
+                var skillContainer =
+                    document.getElementById("skillBarsContainer");
+                if (skillContainer) skillObserver.observe(skillContainer);
+
+                // 3D Tilt
+                document
+                    .querySelectorAll("[data-tilt]")
+                    .forEach(function (card) {
+                        card.style.transition = "transform 0.15s ease-out";
+                        card.addEventListener("mousemove", function (e) {
+                            var r = card.getBoundingClientRect();
+                            card.style.transform =
+                                "perspective(800px) rotateX(" +
+                                ((e.clientY - r.top - r.height / 2) /
+                                    r.height) *
+                                    -5 +
+                                "deg) rotateY(" +
+                                ((e.clientX - r.left - r.width / 2) / r.width) *
+                                    5 +
+                                "deg)";
+                        });
+                        card.addEventListener("mouseleave", function () {
+                            card.style.transition = "transform 0.5s ease";
+                            card.style.transform =
+                                "perspective(800px) rotateX(0) rotateY(0)";
+                            setTimeout(function () {
+                                card.style.transition =
+                                    "transform 0.15s ease-out";
+                            }, 500);
+                        });
+                    });
+
+                // Magnetic links
+                document
+                    .querySelectorAll(".magnetic-link")
+                    .forEach(function (btn) {
+                        btn.style.transition =
+                            "transform 0.3s cubic-bezier(0.2,0.8,0.2,1)";
+                        btn.addEventListener("mousemove", function (e) {
+                            var r = btn.getBoundingClientRect();
+                            btn.style.transform =
+                                "translate(" +
+                                (e.clientX - r.left - r.width / 2) * 0.15 +
+                                "px," +
+                                (e.clientY - r.top - r.height / 2) * 0.15 +
+                                "px)";
+                        });
+                        btn.addEventListener("mouseleave", function () {
+                            btn.style.transform = "translate(0,0)";
+                        });
+                    });
+
+                // Hero parallax
+                var hs = document.getElementById("heroSection");
+                var hl = document.getElementById("heroLeft");
+                var hr = document.getElementById("heroRight");
+                var g1 = document.getElementById("heroGlow1");
+                hs.addEventListener("mousemove", function (e) {
+                    var r = hs.getBoundingClientRect();
+                    var x = (e.clientX - r.left) / r.width - 0.5;
+                    var y = (e.clientY - r.top) / r.height - 0.5;
+                    if (hl)
+                        hl.style.transform =
+                            "translate(" + x * -12 + "px," + y * -8 + "px)";
+                    if (hr)
+                        hr.style.transform =
+                            "translate(" + x * 6 + "px," + y * 4 + "px)";
+                    if (g1)
+                        g1.style.transform =
+                            "translate(" + x * 25 + "px," + y * 18 + "px)";
+                });
+                hs.addEventListener("mouseleave", function () {
+                    [hl, hr, g1].forEach(function (el) {
+                        if (el) {
+                            el.style.transition = "transform 0.6s ease";
+                            el.style.transform = "translate(0,0)";
+                            setTimeout(function () {
+                                el.style.transition = "";
+                            }, 600);
+                        }
+                    });
+                });
+
+                // Timeline accordion
+                document
+                    .querySelectorAll(".timeline-toggle")
+                    .forEach(function (btn) {
+                        btn.addEventListener("click", function () {
+                            var details = btn.nextElementSibling;
+                            var icon = btn.querySelector(".expand-icon");
+                            var wasExpanded =
+                                details.classList.contains("expanded");
+                            document
+                                .querySelectorAll(".timeline-details")
+                                .forEach(function (d) {
+                                    d.classList.remove("expanded");
+                                });
+                            document
+                                .querySelectorAll(".expand-icon")
+                                .forEach(function (ic) {
+                                    ic.classList.remove("rotated");
+                                });
+                            if (!wasExpanded) {
+                                details.classList.add("expanded");
+                                icon.classList.add("rotated");
+                            }
+                        });
+                    });
+
+                // Tabs
+                document.querySelectorAll(".tab-btn").forEach(function (btn) {
+                    btn.addEventListener("click", function () {
+                        document
+                            .querySelectorAll(".tab-btn")
+                            .forEach(function (b) {
+                                b.classList.remove("active");
+                            });
+                        document
+                            .querySelectorAll(".tab-content")
+                            .forEach(function (c) {
+                                c.classList.remove("active");
+                            });
+                        btn.classList.add("active");
+                        document
+                            .getElementById("tab-" + btn.dataset.tab)
+                            .classList.add("active");
+                        if (btn.dataset.tab === "radar") drawRadar(-1);
+                    });
+                });
+
+                // Radar chart
+                function drawRadar(hi) {
+                    var c = document.getElementById("radarChart");
+                    var x = c.getContext("2d");
+                    var w = c.width,
+                        h = c.height,
+                        ct = w / 2,
+                        r = Math.min(w, h) * 0.35;
+                    x.clearRect(0, 0, w, h);
+                    var labels = [
+                        "React/Next",
+                        "Vue.js",
+                        "Node/Express",
+                        "TypeScript",
+                        "Databases",
+                        "DevOps",
+                    ];
+                    var values = [0.93, 0.88, 0.9, 0.85, 0.87, 0.8];
+                    var n = labels.length;
+
+                    for (var rg = 1; rg <= 5; rg++) {
+                        x.beginPath();
+                        for (var i = 0; i <= n; i++) {
+                            var a = (6.28 / n) * (i % n) - 1.57;
+                            var rr = (r / 5) * rg;
+                            if (i === 0)
+                                x.moveTo(
+                                    ct + Math.cos(a) * rr,
+                                    ct + Math.sin(a) * rr,
+                                );
+                            else
+                                x.lineTo(
+                                    ct + Math.cos(a) * rr,
+                                    ct + Math.sin(a) * rr,
+                                );
+                        }
+                        x.closePath();
+                        x.strokeStyle = "rgba(255,255,255,0.06)";
+                        x.lineWidth = 1;
+                        x.stroke();
+                    }
+                    for (var i = 0; i < n; i++) {
+                        var a = (6.28 / n) * i - 1.57;
+                        x.beginPath();
+                        x.moveTo(ct, ct);
+                        x.lineTo(ct + Math.cos(a) * r, ct + Math.sin(a) * r);
+                        x.strokeStyle = "rgba(255,255,255,0.06)";
+                        x.stroke();
+                    }
+                    x.beginPath();
+                    for (var i = 0; i <= n; i++) {
+                        var idx = i % n;
+                        var a = (6.28 / n) * idx - 1.57;
+                        var v = values[idx] * r;
+                        if (i === 0)
+                            x.moveTo(
+                                ct + Math.cos(a) * v,
+                                ct + Math.sin(a) * v,
+                            );
+                        else
+                            x.lineTo(
+                                ct + Math.cos(a) * v,
+                                ct + Math.sin(a) * v,
+                            );
+                    }
+                    x.closePath();
+                    x.fillStyle = "rgba(255,255,255,0.04)";
+                    x.fill();
+                    x.strokeStyle = "rgba(255,255,255,0.2)";
+                    x.lineWidth = 1.5;
+                    x.stroke();
+
+                    for (var i = 0; i < n; i++) {
+                        var a = (6.28 / n) * i - 1.57;
+                        var v = values[i] * r;
+                        var px = ct + Math.cos(a) * v;
+                        var py = ct + Math.sin(a) * v;
+                        var isHovered = hi === i;
+                        x.beginPath();
+                        x.arc(px, py, isHovered ? 6 : 3, 0, 6.28);
+                        x.fillStyle = isHovered
+                            ? "#fff"
+                            : "rgba(255,255,255,0.5)";
+                        x.fill();
+                        if (isHovered) {
+                            x.beginPath();
+                            x.arc(px, py, 10, 0, 6.28);
+                            x.strokeStyle = "rgba(255,255,255,0.15)";
+                            x.lineWidth = 1;
+                            x.stroke();
+                        }
+                        var lx = ct + Math.cos(a) * (r + 28);
+                        var ly = ct + Math.sin(a) * (r + 28);
+                        x.font = isHovered
+                            ? "500 11px Inter"
+                            : "400 10px Inter";
+                        x.fillStyle = isHovered
+                            ? "#fff"
+                            : "rgba(255,255,255,0.4)";
+                        x.textAlign = "center";
+                        x.textBaseline = "middle";
+                        x.fillText(labels[i], lx, ly - 7);
+                        if (isHovered) {
+                            x.font = "500 12px Syne";
+                            x.fillStyle = "rgba(255,255,255,0.7)";
+                            x.fillText(
+                                Math.round(values[i] * 100) + "%",
+                                lx,
+                                ly + 7,
+                            );
+                        }
+                    }
+                }
+
+                var rc = document.getElementById("radarChart");
+                rc.addEventListener("mousemove", function (e) {
+                    var r = rc.getBoundingClientRect();
+                    var sx = rc.width / r.width,
+                        sy = rc.height / r.height;
+                    var mx2 = (e.clientX - r.left) * sx,
+                        my2 = (e.clientY - r.top) * sy;
+                    var ct2 = rc.width / 2,
+                        r2 = Math.min(rc.width, rc.height) * 0.35;
+                    var values = [0.93, 0.88, 0.9, 0.85, 0.87, 0.8];
+                    var closest = -1,
+                        minDist = 35;
+                    for (var i = 0; i < 6; i++) {
+                        var a = (6.28 / 6) * i - 1.57;
+                        var px = ct2 + Math.cos(a) * values[i] * r2;
+                        var py = ct2 + Math.sin(a) * values[i] * r2;
+                        var d = Math.hypot(mx2 - px, my2 - py);
+                        if (d < minDist) {
+                            minDist = d;
+                            closest = i;
+                        }
+                    }
+                    drawRadar(closest);
+                });
+                rc.addEventListener("mouseleave", function () {
+                    drawRadar(-1);
+                });
+
+                // Copy to clipboard
+                document
+                    .querySelectorAll(".copy-trigger")
+                    .forEach(function (el) {
+                        el.addEventListener("click", function (e) {
+                            e.preventDefault();
+                            navigator.clipboard
+                                .writeText(el.dataset.copy)
+                                .then(function () {
+                                    var tooltip =
+                                        el.querySelector(".copy-tooltip");
+                                    tooltip.textContent = "Copied";
+                                    tooltip.classList.add("show");
+                                    setTimeout(function () {
+                                        tooltip.textContent = "Click to copy";
+                                        tooltip.classList.remove("show");
+                                    }, 1200);
+                                });
+                        });
+                    });
+
+                // Contact form
+                var form = document.getElementById("contactForm");
+                var toast = document.getElementById("toast");
+
+                document
+                    .querySelectorAll(".form-input")
+                    .forEach(function (input) {
+                        input.addEventListener("input", function () {
+                            var check =
+                                input.parentElement.querySelector(
+                                    ".form-check",
+                                );
+                            if (check) {
+                                if (input.value.trim().length > 0) {
+                                    check.classList.remove("hidden");
+                                    check.classList.add("flex");
+                                } else {
+                                    check.classList.add("hidden");
+                                    check.classList.remove("flex");
+                                }
+                            }
+                        });
+                    });
+
+                var textarea = form.querySelector("textarea");
+                var charCount = document.querySelector(".char-count");
+                textarea.addEventListener("input", function () {
+                    var len = textarea.value.length;
+                    charCount.textContent = len + " / 500";
+                    charCount.style.color = len > 500 ? "#e5e5e5" : "";
+                });
+
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    var submitText = document.getElementById("submitText");
+                    var submitArrow = document.getElementById("submitArrow");
+                    var submitLoader = document.getElementById("submitLoader");
+                    var submitBtn = document.getElementById("submitBtn");
+
+                    submitText.textContent = "Sending...";
+                    submitArrow.classList.add("hidden");
+                    submitLoader.classList.remove("hidden");
+                    submitLoader.classList.add("inline-block");
+                    submitBtn.disabled = true;
+                    submitBtn.style.opacity = "0.6";
+
+                    setTimeout(function () {
+                        submitText.textContent = "Send Message";
+                        submitArrow.classList.remove("hidden");
+                        submitLoader.classList.add("hidden");
+                        submitLoader.classList.remove("inline-block");
+                        submitBtn.disabled = false;
+                        submitBtn.style.opacity = "1";
+                        toast.classList.remove("hidden");
+                        toast.style.animation =
+                            "fadeInUpBlur 0.5s cubic-bezier(0.2,0.8,0.2,1) both";
+                        form.reset();
+                        document
+                            .querySelectorAll(".form-check")
+                            .forEach(function (c) {
+                                c.classList.add("hidden");
+                                c.classList.remove("flex");
+                            });
+                        charCount.textContent = "0 / 500";
+                        charCount.style.color = "";
+                        setTimeout(function () {
+                            toast.classList.add("hidden");
+                        }, 2500);
+                    }, 1500);
+                });
+
+                // Mobile menu
+                var menuBtn = document.getElementById("mobileMenuBtn");
+                var mobileMenu = document.getElementById("mobileMenu");
+                var menuIcon = document.getElementById("menuIcon");
+                var menuOpen = false;
+                menuBtn.addEventListener("click", function () {
+                    menuOpen = !menuOpen;
+                    mobileMenu.classList.toggle("hidden");
+                    menuIcon.setAttribute(
+                        "data-icon",
+                        menuOpen ? "lucide:x" : "lucide:menu",
+                    );
+                });
+                document
+                    .querySelectorAll(".mobile-nav")
+                    .forEach(function (link) {
+                        link.addEventListener("click", function () {
+                            mobileMenu.classList.add("hidden");
+                            menuOpen = false;
+                            menuIcon.setAttribute("data-icon", "lucide:menu");
+                        });
+                    });
+
+                // Smooth scroll
+                document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+                    a.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        var target = document.querySelector(
+                            a.getAttribute("href"),
+                        );
+                        if (target)
+                            target.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start",
+                            });
+                    });
+                });
+
+                document
+                    .getElementById("backToTop")
+                    .addEventListener("click", function () {
+                        scrollTo({ top: 0, behavior: "smooth" });
+                    });
+
+                // Active nav highlight
+                var sections = document.querySelectorAll("section[id]");
+                var navLinks = document.querySelectorAll('nav a[href^="#"]');
+                addEventListener("scroll", function () {
+                    var current = "";
+                    sections.forEach(function (s) {
+                        if (scrollY >= s.offsetTop - 150) current = s.id;
+                    });
+                    navLinks.forEach(function (link) {
+                        if (link.getAttribute("href") === "#" + current) {
+                            link.style.color = "#fff";
+                        } else {
+                            link.style.color = "#b0b0b0";
+                        }
+                    });
+                });
+
+                // Nav scramble effect
+                document
+                    .querySelectorAll(".nav-scramble")
+                    .forEach(function (el) {
+                        var original = el.textContent;
+                        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                        el.addEventListener("mouseenter", function () {
+                            var iteration = 0;
+                            var interval = setInterval(function () {
+                                el.textContent = original
+                                    .split("")
+                                    .map(function (char, index) {
+                                        if (index < iteration)
+                                            return original[index];
+                                        return chars[
+                                            Math.floor(
+                                                Math.random() * chars.length,
+                                            )
+                                        ];
+                                    })
+                                    .join("");
+                                iteration += 0.5;
+                                if (iteration >= original.length) {
+                                    clearInterval(interval);
+                                    el.textContent = original;
+                                }
+                            }, 30);
+                        });
+                    });
+            })();
+        </script>
+    </body>
+</html>
