@@ -301,6 +301,7 @@
                 background: rgba(240, 238, 230, 0.95);
             }
             .cred-cover {
+                position: relative;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -308,7 +309,15 @@
                 aspect-ratio: 16 / 9;
                 border: 1px solid rgba(124, 120, 110, 0.6);
                 background: rgba(221, 217, 206, 0.45);
+                overflow: hidden;
                 margin-bottom: 16px;
+            }
+            .cred-cover img {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
             .dotted-b {
                 border-bottom: 1px dotted rgba(124, 120, 110, 0.9);
@@ -2510,14 +2519,13 @@
                             style="border-color: rgba(124, 120, 110, 0.75); transition-delay: 0.03s"
                         >
                             <div class="cred-cover">
-                                <span
-                                    class="iconify"
-                                    data-icon="lucide:image"
-                                    data-width="22"
-                                    data-height="22"
-                                    style="color: #9c9990"
-                                ></span>
-                                <span class="label">COVER 01</span>
+                                <img
+                                    src="certificate/bird.png"
+                                    alt="Responsive Web Design certificate cover"
+                                    width="1254"
+                                    height="1254"
+                                    loading="lazy"
+                                />
                             </div>
                             <div class="flex items-baseline justify-between">
                                 <span class="label-ink">CRED 01</span
@@ -2539,14 +2547,13 @@
                             style="border-color: rgba(124, 120, 110, 0.75); transition-delay: 0.06s"
                         >
                             <div class="cred-cover">
-                                <span
-                                    class="iconify"
-                                    data-icon="lucide:image"
-                                    data-width="22"
-                                    data-height="22"
-                                    style="color: #9c9990"
-                                ></span>
-                                <span class="label">COVER 02</span>
+                                <img
+                                    src="certificate/birds.png"
+                                    alt="Backend Development certificate cover"
+                                    width="1536"
+                                    height="1024"
+                                    loading="lazy"
+                                />
                             </div>
                             <div class="flex items-baseline justify-between">
                                 <span class="label-ink">CRED 02</span
@@ -2568,14 +2575,13 @@
                             style="border-color: rgba(124, 120, 110, 0.75); transition-delay: 0.09s"
                         >
                             <div class="cred-cover">
-                                <span
-                                    class="iconify"
-                                    data-icon="lucide:image"
-                                    data-width="22"
-                                    data-height="22"
-                                    style="color: #9c9990"
-                                ></span>
-                                <span class="label">COVER 03</span>
+                                <img
+                                    src="certificate/butterfly.png"
+                                    alt="JavaScript Certification cover"
+                                    width="1023"
+                                    height="1537"
+                                    loading="lazy"
+                                />
                             </div>
                             <div class="flex items-baseline justify-between">
                                 <span class="label-ink">CRED 03</span
@@ -2597,14 +2603,13 @@
                             style="border-color: rgba(124, 120, 110, 0.75); transition-delay: 0.12s"
                         >
                             <div class="cred-cover">
-                                <span
-                                    class="iconify"
-                                    data-icon="lucide:image"
-                                    data-width="22"
-                                    data-height="22"
-                                    style="color: #9c9990"
-                                ></span>
-                                <span class="label">COVER 04</span>
+                                <img
+                                    src="certificate/frog.png"
+                                    alt="Git and GitHub certificate cover"
+                                    width="1086"
+                                    height="1448"
+                                    loading="lazy"
+                                />
                             </div>
                             <div class="flex items-baseline justify-between">
                                 <span class="label-ink">CRED 04</span
@@ -2626,14 +2631,13 @@
                             style="border-color: rgba(124, 120, 110, 0.75); transition-delay: 0.15s"
                         >
                             <div class="cred-cover">
-                                <span
-                                    class="iconify"
-                                    data-icon="lucide:image"
-                                    data-width="22"
-                                    data-height="22"
-                                    style="color: #9c9990"
-                                ></span>
-                                <span class="label">COVER 05</span>
+                                <img
+                                    src="certificate/bee.png"
+                                    alt="Bash Scripting certificate cover"
+                                    width="1254"
+                                    height="1254"
+                                    loading="lazy"
+                                />
                             </div>
                             <div class="flex items-baseline justify-between">
                                 <span class="label-ink">CRED 05</span
@@ -2654,21 +2658,20 @@
                             style="border-color: rgba(124, 120, 110, 0.75); transition-delay: 0.18s"
                         >
                             <div class="cred-cover">
-                                <span
-                                    class="iconify"
-                                    data-icon="lucide:image"
-                                    data-width="22"
-                                    data-height="22"
-                                    style="color: #9c9990"
-                                ></span>
-                                <span class="label">COVER 06</span>
+                                <img
+                                    src="certificate/pyramid.png"
+                                    alt="Git &amp; GitHub Mastery certificate cover"
+                                    width="1254"
+                                    height="1254"
+                                    loading="lazy"
+                                />
                             </div>
                             <div class="flex items-baseline justify-between">
                                 <span class="label-ink">CRED 06</span
                                 ><span class="label">2022</span>
                             </div>
                             <h3 class="doc-h text-[15.5px] mt-3">
-                                GIT &amp; GITHUB MASTERY
+                                Fullstack &amp; Development
                             </h3>
                             <p class="label mt-1">UDEMY</p>
                             <div class="hair my-3"></div>
